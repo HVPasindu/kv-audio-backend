@@ -1,7 +1,9 @@
 import User from "../models/user.js";
+import bcrpt from "bcrypt"
 
-export async function postUser(req,res){
+export async function registerUser(req,res){
     let newUser = req.body;
+    newUser.password = bcrpt.hashSync(newUser.password,10);
     let user =new User(newUser);
 
     try{
@@ -10,7 +12,7 @@ export async function postUser(req,res){
             message:"user saved success",
         })
     }catch(error){
-        res.status(401).json({
+        res.status(500).json({
             error:"user not add to the database..."
         })
     }
