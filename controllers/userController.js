@@ -18,6 +18,24 @@ export async function registerUser(req,res){
     }
 }
 
+export async function loginUser(req,res){
+    const data=req.body;
+    try{
+       const user=await User.findOne({
+            email:data.email,
+        })
+        res.json({
+            user:user,
+        })
+
+    }catch(error){
+        res.status(500).json({
+            error:"your email is incorrect...."
+        })
+    }
+
+}
+
 export function getUser(req,res){
     User.find().then((result)=>{
         res.json(result)
