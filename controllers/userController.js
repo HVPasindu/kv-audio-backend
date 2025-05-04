@@ -1,18 +1,19 @@
 import User from "../models/user.js";
 
-export function postUser(req,res){
+export async function postUser(req,res){
     let newUser = req.body;
     let user =new User(newUser);
 
-    user.save().then(()=>{
+    try{
+        await user.save();
         res.json({
             message:"user saved success",
         })
-    }).catch((error)=>{
+    }catch(error){
         res.status(401).json({
-            error:"user not add in database...."
+            error:"user not add to the database..."
         })
-    })
+    }
 }
 
 export function getUser(req,res){
