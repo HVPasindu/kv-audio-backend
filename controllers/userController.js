@@ -24,13 +24,30 @@ export async function loginUser(req,res){
        const user=await User.findOne({
             email:data.email,
         })
-        res.json({
-            user:user,
-        })
-
+        if(user==null){
+            res.status(404).json({
+                message:"user is not found..."
+                
+            })
+            
+        }else{
+           
+            const isPassword = bcrpt.compareSync(data.password,user.password);
+            if(isPassword){
+                res.json({
+                    message:"Login is successfully...",
+                    user:user
+                })
+            }else{
+                res.status(404).json({
+                    error:"Login faild..."
+                })
+            }
+        }
     }catch(error){
         res.status(500).json({
-            error:"your email is incorrect...."
+            message: "Error logging in user",
+            error: error.message,
         })
     }
 
