@@ -1,5 +1,6 @@
 import User from "../models/user.js";
 import bcrpt from "bcrypt"
+import jwt from "jsonwebtoken"
 
 export async function registerUser(req,res){
     let newUser = req.body;
@@ -34,9 +35,17 @@ export async function loginUser(req,res){
            
             const isPassword = bcrpt.compareSync(data.password,user.password);
             if(isPassword){
+                const token = jwt.sign({
+                    firsName:user.firsName,
+                    lastName:user.lastName,
+                    email:user.email,
+                    role:user.role,
+                    phoneNumber:user.phoneNumber
+                },"kv secret 89")
+
                 res.json({
-                    message:"Login is successfully...",
-                    user:user
+                    message:"Login successfull",
+                    token:token
                 })
             }else{
                 res.status(404).json({

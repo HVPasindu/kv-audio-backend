@@ -11,7 +11,7 @@ const productSchema = mongoose.Schema({
     },
     description:{
         type:String,
-        required:ture
+        required:true
     }
 })
 

@@ -26,6 +26,10 @@ const userSchema = mongoose.Schema({
         type:String,
         required:true,
         default:"customer"
+    },
+    phoneNumber:{
+        type:String,
+        required:true
     }
 })
 let User = mongoose.model("user",userSchema);

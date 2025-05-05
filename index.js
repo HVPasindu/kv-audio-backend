@@ -2,7 +2,7 @@ import express from "express"
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import userRouter from "./routers/userRouter.js";
-import productRouter from "./models/product.js";
+import productRouter from "./routers/productRouter.js";
 
 const app = express();
 app.use(bodyParser.json());
