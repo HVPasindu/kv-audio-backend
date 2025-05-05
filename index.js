@@ -2,6 +2,7 @@ import express from "express"
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import userRouter from "./routers/userRouter.js";
+import productRouter from "./models/product.js";
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,6 +15,7 @@ connection.once("open",()=>{
 })
 
 app.use("/user",userRouter);
+app.use("/product",productRouter)
 
 
 
