@@ -9,7 +9,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use((req,res,next)=>{
     let token = req.header("Authorization");
-    console.log(token)
+    //console.log(token)
     
     if(token!=null){
         token=token.replace("Bearer ","")
