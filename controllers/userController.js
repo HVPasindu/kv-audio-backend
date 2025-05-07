@@ -41,7 +41,7 @@ export async function loginUser(req,res){
                     email:user.email,
                     role:user.role,
                     phoneNumber:user.phoneNumber
-                },"kv secret 89")
+                },process.env.JWT_SECRET)
 
                 res.json({
                     message:"Login successfull",
