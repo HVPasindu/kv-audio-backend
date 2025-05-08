@@ -5,6 +5,7 @@ import userRouter from "./routers/userRouter.js";
 import productRouter from "./routers/productRouter.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
+import reviewRouter from "./routers/reviewRouter.js";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ connection.once("open",()=>{
 
 app.use("/user",userRouter);
 app.use("/product",productRouter)
+app.use("/review",reviewRouter);
 
 
 

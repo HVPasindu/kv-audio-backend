@@ -40,7 +40,8 @@ export async function loginUser(req,res){
                     lastName:user.lastName,
                     email:user.email,
                     role:user.role,
-                    phoneNumber:user.phoneNumber
+                    phoneNumber:user.phoneNumber,
+                    profilePicture:user.profilePicture
                 },process.env.JWT_SECRET)
 
                 res.json({
