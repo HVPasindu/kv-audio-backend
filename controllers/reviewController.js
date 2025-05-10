@@ -26,3 +26,31 @@ export async function addReview(req,res){
             }
         }
     }
+
+export async function getReview(req,res){
+    //const data =req.body;data mokuth evanne naha
+    if(req.user==null||req.user.role!="admin"){
+        try{
+            const review = await Reviewmodel.find({
+            isApproved:true
+        })
+            res.joson(review);
+            return;        
+        }catch(error){
+            res.status(500).json({
+                message:"no reviews in the site..."
+            })
+        }
+        
+    }else{
+        try{
+            const review = await Reviewmodel.find()
+            res.joson(review);
+            return;        
+        }catch(error){
+            res.status(500).json({
+                message:"no reviews in the site..."
+            })
+        }
+    }
+}
