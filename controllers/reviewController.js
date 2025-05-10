@@ -30,20 +30,20 @@ export async function addReview(req,res){
 export async function getReview(req,res){
     //const data =req.body;data mokuth evanne naha
     if(req.user==null||req.user.role!="admin"){
-        /*try{
+        try{
             const review = await Reviewmodel.find({
             isApproved:true,
            
         })  
-            console.log(review) 
-            res.joson(review);
+            
+            res.json(review);
                
         }catch(error){
             res.status(500).json({
                 message:"no reviews in the sitee..."
             })
-        }*/
-       Reviewmodel.find({
+        }
+       /*Reviewmodel.find({
         isApproved:true
        }).then((reviews)=>{
         res.json(reviews);
@@ -52,13 +52,13 @@ export async function getReview(req,res){
                 message:"no reviews in the sitee..."
             })
        })
-            
+            */
         
         
     }else{
         try{
             const review = await Reviewmodel.find()
-            res.joson(review);
+            res.json(review);
             return;        
         }catch(error){
             res.status(500).json({
