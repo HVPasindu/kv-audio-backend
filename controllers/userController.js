@@ -36,7 +36,7 @@ export async function loginUser(req,res){
             const isPassword = bcrpt.compareSync(data.password,user.password);
             if(isPassword){
                 const token = jwt.sign({
-                    firsName:user.firsName,
+                    firstName:user.firstName,
                     lastName:user.lastName,
                     email:user.email,
                     role:user.role,
