@@ -67,3 +67,46 @@ export async function getReview(req,res){
         }
     }
 }
+
+export async function deleteReview(req,res){
+    const email = req.params.email;
+    if(req.user==null){
+        res.status(404).josn({message:"please login...."});
+        return;
+    }if(req.user.role!="admin"){
+        if(req.user.email==email){
+            Reviewmodel.deleteOne({
+            email:email
+        }).then(()=>{
+            res.json({
+                 message:"review is deleted"
+            })
+           
+        }).catch((error)=>{
+            res.json({
+                error:error
+            })
+        })
+        }else{
+            res.status(404).json({
+                message:"you are not authorized to perfrom this action..."
+            })
+        }
+
+        
+    }else{
+        try{
+           await Reviewmodel.deleteOne({
+            email:email
+        })
+            res.json({
+                message:"review is deleted..."
+            })
+        }catch(error){
+            res.status(500).json({
+                message:"review deletion failed"
+            })
+        }
+    }
+
+}
