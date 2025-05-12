@@ -20,7 +20,7 @@ export async function addReview(req,res){
                     message:"Review added successfully"
                 })
             }catch(error){
-                res.stastus(500).josn({
+                res.status(500).json({
                     message:"review addtion failed"
                 })
             }
@@ -70,11 +70,13 @@ export async function getReview(req,res){
 
 export async function deleteReview(req,res){
     const email = req.params.email;
+    console.log(email);
     if(req.user==null){
-        res.status(404).josn({message:"please login...."});
+        res.status(404).json({message:"please login...."});
         return;
     }if(req.user.role!="admin"){
         if(req.user.email==email){
+            
             Reviewmodel.deleteOne({
             email:email
         }).then(()=>{
@@ -96,12 +98,20 @@ export async function deleteReview(req,res){
         
     }else{
         try{
+            Reviewmodel.findOne({ email: email })
+            .then((review) => {
+                if (!review) {
+                     res.status(404).json({ message: "Review not foundss" });
+                     return
+                }})
+
            await Reviewmodel.deleteOne({
             email:email
         })
             res.json({
-                message:"review is deleted..."
+                message:"review is deleteds..."
             })
+           //console.log(res)
         }catch(error){
             res.status(500).json({
                 message:"review deletion failed"
@@ -109,4 +119,41 @@ export async function deleteReview(req,res){
         }
     }
 
+}
+
+export function approveReview(req,res){
+    const email = req.params.email;
+    console.log(email)
+    if(req.user==null){
+        res.status(404).json({
+            message:"please login and try again..."
+        })
+        return;
+    }if(req.user.role=="admin"){
+        //console.log(email)
+        Reviewmodel.findOne({ email: email })
+            .then((review) => {
+                if (!review) {
+                    res.status(404).json({ message: "Review not founds" });
+                    return
+                }})
+
+        Reviewmodel.updateOne(
+            {email:email},
+            {isApproved:true}
+    ).then((r)=>{
+        //console.log(r)
+        res.json({
+            message:"review approved..."
+        })
+    }).catch((error)=>{
+        res.status(500).json({
+            message:"review update failed"
+        })
+    })
+    }else{
+        res.status(404).json({
+            message:"you are not admin .Only admin can approve the reviews"
+        })
+    }
 }

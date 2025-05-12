@@ -36,7 +36,7 @@ connection.once("open",()=>{
 
 app.use("/user",userRouter);
 app.use("/product",productRouter)
-app.use("/review",reviewRouter);
+app.use("/api/review",reviewRouter);
 
 
 

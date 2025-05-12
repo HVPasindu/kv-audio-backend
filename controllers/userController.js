@@ -45,9 +45,11 @@ export async function loginUser(req,res){
                 },process.env.JWT_SECRET)
 
                 res.json({
+                    
                     message:"Login successfull",
                     token:token
                 })
+                console.log(token)
             }else{
                 res.status(404).json({
                     error:"Login faild..."
