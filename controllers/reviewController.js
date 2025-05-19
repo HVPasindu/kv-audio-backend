@@ -70,7 +70,7 @@ export async function getReview(req,res){
 
 export async function deleteReview(req,res){
     const email = req.params.email;
-    console.log(email);
+    //console.log(email);
     if(req.user==null){
         res.status(404).json({message:"please login...."});
         return;
@@ -123,7 +123,7 @@ export async function deleteReview(req,res){
 
 export function approveReview(req,res){
     const email = req.params.email;
-    console.log(email)
+    //console.log(email)
     if(req.user==null){
         res.status(404).json({
             message:"please login and try again..."

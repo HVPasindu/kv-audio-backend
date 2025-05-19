@@ -12,6 +12,25 @@ const productSchema = mongoose.Schema({
     description:{
         type:String,
         required:true
+    },
+    key:{
+        type:String,
+        required:true,
+        unique:true
+    },
+    category:{
+        type:String,
+        required:true,
+        default:"uncategorized"
+    },
+    availability:{
+        type:Boolean,
+        required:true,
+        default:true
+    },
+    dimensions:{
+        type:String,
+        required:true
     }
 })
 
