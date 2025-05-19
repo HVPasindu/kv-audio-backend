@@ -74,3 +74,14 @@ export function getUser(req,res){
         })
     })
 }
+
+export function isAdmin(req){
+    let isAdmin=false;
+    if(req.user!=null){
+        if(req.user.role=="admin"){
+            isAdmin=true;
+        }
+
+    }
+    return isAdmin;
+}
