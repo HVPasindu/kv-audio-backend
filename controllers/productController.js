@@ -1,3 +1,4 @@
+//import { json } from "body-parser";
 import Product from "../models/product.js";
 import { isAdmin } from "./userController.js";
 
@@ -54,4 +55,24 @@ export async function getProduct(req,res){
             e:e.toString()
         })
     }
+}
+
+export async function updateProduct(req,res){
+    const key=req.params.key
+    try{
+        if(isAdmin(req)){
+            await Product.updateOne({
+                key:key
+            },data)
+            res.json({
+                message:"product updated..."
+            })
+        }
+
+    }catch(e){
+        res.status(500).json({
+            message:"can' fintd that product"
+        })
+    }
+
 }
