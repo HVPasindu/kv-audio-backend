@@ -1,4 +1,4 @@
-//import { json } from "body-parser";
+
 import Product from "../models/product.js";
 import { isAdmin } from "./userController.js";
 
@@ -58,20 +58,33 @@ export async function getProduct(req,res){
 }
 
 export async function updateProduct(req,res){
-    const key=req.params.key
+    
     try{
         if(isAdmin(req)){
+            const key=req.params.key;
+            const data =req.body;
+            Product.findOne({key:key}).then((productt)=>{
+                if(!productt){
+                     res.status(404).json({ message: "product can't not founds" });
+                    return
+                }
+            })
             await Product.updateOne({
                 key:key
             },data)
             res.json({
                 message:"product updated..."
+
             })
+            return;
+        }else{
+            res.status(404).json({message:"you are not authorized to perfome this action...."})
+            return;
         }
 
     }catch(e){
         res.status(500).json({
-            message:"can' fintd that product"
+            message:"can't fined that product"
         })
     }
 
