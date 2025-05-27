@@ -10,12 +10,12 @@ const inquirySchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    Phone:{
+    phoneNumber:{
         type:String,
         required:true
     },
     date:{
-        type:date,
+        type:Date,
         required:true,
         default:Date.now()
     },

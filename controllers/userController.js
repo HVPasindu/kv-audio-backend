@@ -87,12 +87,14 @@ export function isAdmin(req){
 }
 
 export function isCustomer(req){
-    let isCustomer=false;
-    if(req.user=!null){
+    //console.log("kjk")
+   //console.log(req.user.role)
+    let isCustomers=false;
+    if(req.user!=null){
         if(req.user.role=="customer"){
-            isCustomer=true;
+            isCustomers=true;
         }
     }
 
-    return isCustomer;
+    return isCustomers;
 }
