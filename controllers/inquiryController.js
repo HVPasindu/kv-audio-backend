@@ -1,5 +1,5 @@
 import Inquiry from "../models/inquiry.js";
-import { isCustomer } from "./userController.js";
+import { isAdmin, isCustomer, registerUser } from "./userController.js";
 
 export async function addInquiry(req,res){
     let iscustomer= isCustomer(req);
@@ -36,5 +36,35 @@ export async function addInquiry(req,res){
 
             message:"Failed to add inquiry.."
         })
+    }
+}
+
+export function getInquiry(req,res){
+    
+    if(isCustomer(req)){
+        Inquiry.findOne({
+            email:req.user.email
+        }).then((inqu)=>{
+            res.json(inqu)
+        }).catch((err)=>{
+            res.status(500).res.json({
+                message:"no inquiry from you..."
+            })
+        })
+        return;
+    }if(isAdmin(req)){
+        Inquiry.find().then((inqu)=>{
+            res.json(inqu)
+        }).catch((err)=>{
+            res.status(500).res.json({
+                message:"no inquiries..."
+            })
+        })
+        return;
+    }else{
+        res.status(404).json({
+            message:"you are nopt authrized to prform this action..."
+        })
+        return;
     }
 }
