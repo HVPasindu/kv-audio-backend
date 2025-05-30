@@ -1,3 +1,4 @@
+
 import Inquiry from "../models/inquiry.js";
 import { isAdmin, isCustomer, registerUser } from "./userController.js";
 
@@ -18,11 +19,11 @@ export async function addInquiry(req,res){
                 id = inquirys[0].id+1;
             }
             data.id=id;
-            console.log("kiils")
+            //console.log("kiils")
             const newInqury = new Inquiry(data);
-            console.log("kiil")
+            //console.log("kiil")
             const respons = await newInqury.save();
-            console.log("kii")
+           // console.log("kii")
             res.json({
                 message:"Inquiry added successfully...",
                 id:respons.id 
@@ -66,5 +67,59 @@ export function getInquiry(req,res){
             message:"you are nopt authrized to prform this action..."
         })
         return;
+    }
+}
+
+export async function deleteInquiry(req,res){
+    
+    try{if(isCustomer(req)){
+        //console.log("hii");
+            const id=req.params.id;
+           //console.log(id);
+            const inquiry=await Inquiry.findOne({id:id});
+            //console.log(inquiry.email);
+            //console.log("req.params.id:", req.params.id);
+            if (!inquiry) {
+                    return res.status(404).json({ message: "Inquiry not founds" });
+            }
+            else{
+                if(inquiry.email==req.user.email){
+                    await Inquiry.deleteOne({
+                        id:id
+                    })
+                    res.json({
+                        message:"inquiry is deleted..."
+                    })
+                    return;
+                }else{
+                    res.status(404).json({
+                        message:"you are not authrized to prform this action...2"
+                    })
+                    return;
+                }
+            }
+        }else if(isAdmin(req)){
+            const id=req.params.id;
+            const inquiry = await Inquiry.findOne({ id: id });
+            if (!inquiry) {
+                    return res.status(404).json({ message: "Inquiry not found" });
+            }
+           await Inquiry.deleteOne({
+                id:id
+            })
+            res.json({
+                message:"inquiry is deleted...1"
+            })
+            return;
+        }else{
+            console.log(req.user)
+            res.status(404).json({
+                        message:"you are nopt authrized to prform this action...3"
+                    })
+                    return;}
+    }catch(e){
+        res.status(404).json({
+            message:"faild to delete inquityy..."
+        })
     }
 }
