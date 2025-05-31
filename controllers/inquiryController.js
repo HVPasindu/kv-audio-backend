@@ -112,7 +112,7 @@ export async function deleteInquiry(req,res){
             })
             return;
         }else{
-            console.log(req.user)
+            //console.log(req.user)
             res.status(404).json({
                         message:"you are nopt authrized to prform this action...3"
                     })
@@ -120,6 +120,61 @@ export async function deleteInquiry(req,res){
     }catch(e){
         res.status(404).json({
             message:"faild to delete inquityy..."
+        })
+    }
+}
+
+export async function inquiriesUpdate(req,res){
+    try{
+        if(isCustomer(req)){
+        const id = req.params.id;
+        const data=req.body;
+        const inqu=await Inquiry.findOne({id:id})
+        if(!inqu){
+            return res.status(404).json({
+                message:"can not find inquiry.."
+            })
+        }
+        else if(inqu.email==req.user.email){
+                await Inquiry.updateOne({
+                    id:id
+                },data);
+                res.json({
+                    message:"inquiry is updated"
+                })
+        }else{
+            //console.log(req.user);
+            res.status(404).json({
+                        message:"you are not authrized to prform this action...1"
+                    })
+                    return;}
+        } if(isAdmin(req)){
+            //console.log("hii")
+            const id=req.params.id;
+            const data = req.body;
+            const inqu=await Inquiry.findOne({id:id});
+             if(!inqu){
+                return res.status(404).json({
+                message:"can not find inquiry.."
+                })
+            }
+            await Inquiry.updateOne({
+                id:id
+            },data)
+             return res.json({
+                    message:"inquiry is updated"
+                })
+        }else{
+            res.status(404).json({
+                        message:"you are not authrized to prform this action...2"
+                    })
+                    return;}
+        
+         
+        
+    }catch(error){
+        res.status(404).json({
+            message:"can't update..."
         })
     }
 }
