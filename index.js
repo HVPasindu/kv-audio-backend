@@ -7,10 +7,12 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
 import reviewRouter from "./routers/reviewRouter.js";
 import InquiryRouter from "./routers/inquiryRouter.js";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 app.use((req,res,next)=>{
     let token = req.header("Authorization");
@@ -35,7 +37,7 @@ connection.once("open",()=>{
     console.log("Mongodb connection successfully...")
 })
 
-app.use("/user",userRouter);
+app.use("/api/user",userRouter);
 app.use("/product",productRouter)
 app.use("/api/review",reviewRouter);
 app.use("/api/inquiry",InquiryRouter);
