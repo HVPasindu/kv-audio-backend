@@ -38,7 +38,7 @@ connection.once("open",()=>{
 })
 
 app.use("/api/user",userRouter);
-app.use("/product",productRouter)
+app.use("/api/product",productRouter)
 app.use("/api/review",reviewRouter);
 app.use("/api/inquiry",InquiryRouter);
 

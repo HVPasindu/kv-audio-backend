@@ -28,7 +28,8 @@ export async function addProduct(req,res){
 
     }catch(error){
         res.status(500).json({
-            message:"product addition failed..."
+            message:"product addition failed...",
+            error: error.message
         })
     }
 }
@@ -57,35 +58,57 @@ export async function getProduct(req,res){
     }
 }
 
-export async function updateProduct(req,res){
-    
-    try{
-        if(isAdmin(req)){
-            const key=req.params.key;
-            const data =req.body;
-            Product.findOne({key:key}).then((productt)=>{
-                if(!productt){
-                     res.status(404).json({ message: "product can't not founds" });
-                    return
-                }
-            })
-            await Product.updateOne({
-                key:key
-            },data)
-            res.json({
-                message:"product updated..."
-
-            })
-            return;
-        }else{
-            res.status(404).json({message:"you are not authorized to perfome this action...."})
-            return;
-        }
-
-    }catch(e){
-        res.status(500).json({
-            message:"can't fined that product"
-        })
+export async function updateProduct(req, res) {
+  try {
+    if (!isAdmin(req)) {
+      return res.status(403).json({
+        message: "You are not authorized to perform this action.",
+      });
     }
 
+    const key = req.params.key;
+    const data = req.body;
+
+    const product = await Product.findOne({ key: key });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found." });
+    }
+
+    await Product.updateOne({ key: key }, data);
+
+    return res.json({ message: "Product updated successfully." });
+
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({
+      message: "Server error while updating the product.",
+    });
+  }
+}
+
+
+
+export async function deleteProduct(req, res) {
+  try {
+    if (!isAdmin(req)) {
+      return res.status(403).json({ message: "You are not authorized to perform this action." });
+    }
+
+    const key = req.params.key;
+
+    const product = await Product.findOne({ key: key });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    await Product.deleteOne({ key: key });
+
+    return res.json({ message: "Product deleted..." });
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
 }

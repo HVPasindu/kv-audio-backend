@@ -28,7 +28,7 @@ const productSchema = mongoose.Schema({
         required:true,
         default:true
     },
-    dimensions:{
+    dimentions:{
         type:String,
         required:true
     }

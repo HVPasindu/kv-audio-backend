@@ -16,6 +16,7 @@ export async function registerUser(req,res){
         res.status(500).json({
             error:"user not add to the database..."
         })
+      
     }
 }
 
@@ -30,6 +31,7 @@ export async function loginUser(req,res){
                 message:"user is not found..."
                 
             })
+            return;
             
         }else{
            
@@ -47,13 +49,16 @@ export async function loginUser(req,res){
                 res.json({
                     
                     message:"Login successfull",
-                    token:token
+                    token:token,
+                    user:user
+
                 })
                 console.log(token)
             }else{
                 res.status(404).json({
                     error:"Login faild..."
                 })
+                return;
             }
         }
     }catch(error){
