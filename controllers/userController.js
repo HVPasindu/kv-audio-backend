@@ -21,6 +21,7 @@ export async function registerUser(req,res){
 }
 
 export async function loginUser(req,res){
+    //console.log("ggjj");
     const data=req.body;
     try{
        const user=await User.findOne({

@@ -24,6 +24,10 @@ const userSchema = mongoose.Schema({
         required:true,
         default:"customer"
     },
+    address:{
+        type:String,
+        required:true
+    },
     phoneNumber:{
         type:String,
         required:true
