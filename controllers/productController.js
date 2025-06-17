@@ -112,3 +112,23 @@ export async function deleteProduct(req, res) {
     return res.status(500).json({ message: "Server error" });
   }
 }
+
+export async function overViews(req,res){
+  try{
+    const key=req.params.key;
+    const product=await Product.findOne({
+      key:key
+    })
+    if(product==null){
+      res.status(404).json({
+        message:"product not found"
+      })
+      return;
+    }
+
+  }catch(e){
+    res.status(500).json({
+      message:"Failed to get product"
+    })
+  }
+}
