@@ -114,8 +114,10 @@ export async function deleteProduct(req, res) {
 }
 
 export async function overViews(req,res){
+ 
   try{
-    const key=req.params.key;
+     const key=req.params.key;
+    //console.log(key)
     const product=await Product.findOne({
       key:key
     })
@@ -125,6 +127,8 @@ export async function overViews(req,res){
       })
       return;
     }
+    res.json(product);
+    return
 
   }catch(e){
     res.status(500).json({
