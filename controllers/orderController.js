@@ -3,6 +3,7 @@ import Product from "../models/product.js";
 
 export async function createOrder(req,res){
         const data=req.body;
+        //console.log(data)
         const orderInfo ={
             orderedItems : []
         }
@@ -83,4 +84,69 @@ export async function createOrder(req,res){
             })
         }
 
+}
+
+export async function getQuote(req,res){
+    const data=req.body;
+        //console.log(data)
+        const orderInfo ={
+            orderedItems : []
+        }
+        
+        let oneDayCost =0;
+        for(let i=0;i<data.orderedItems.length;i++){
+            try{
+                const product = await Product.findOne({
+                    key:data.orderedItems[i].key
+                })
+                if(product==null){
+                    res.status(404).json({
+                        message:"product with key"+data.orderedItems[i].key+"not found"
+                    })
+                    return
+                }
+
+                if(product.availability==false){
+                    res.status(404).json({
+                        message:"product with key"+data.orderedItems[i].key+"is not available"
+                    })
+                    return
+                }
+                orderInfo.orderedItems.push({
+                    product:{
+                        key:product.key,
+                        name:product.name,
+                        image:product.image[0],
+                        price:product.price
+                    },
+                    quantity:data.orderedItems[i].qty
+                })
+                oneDayCost +=product.price*data.orderedItems[i].qty
+            }catch(e){
+                    console.error(e);
+                    res.status(500).json({
+                        message:"Failed to create order"
+                    })
+                    return
+            }
+        }
+
+        orderInfo.days=data.days;   
+        orderInfo.startingDate=data.startingDate;
+        orderInfo.endingDate = data.endingDate;
+        orderInfo.totalAmount=oneDayCost*data.days;
+
+        try{
+            
+            
+            res.json({
+                message:"Order created successfully",
+                total:orderInfo.totalAmount,
+            })
+        }catch(e){
+            res.status(500).json({
+                message:"Failed to create order",
+                error: e.message 
+            })
+        }
 }
