@@ -140,7 +140,7 @@ export async function getQuote(req,res){
             
             
             res.json({
-                message:"Order created successfully",
+                message:"Order quatation",
                 total:orderInfo.totalAmount,
             })
         }catch(e){
