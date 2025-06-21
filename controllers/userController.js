@@ -104,3 +104,43 @@ export function isCustomer(req){
 
     return isCustomers;
 }
+
+export async function getAllUsers(req,res){
+    if(isAdmin(req)){
+        try{
+            const users = await User.find();
+            res.json(users);
+        }catch(e){
+            res.status(500).jsom({error:"Failed to get users"})
+        }
+    }else{
+        res.status(403).json({
+            error:"Unauthorized"
+        })
+    }
+}
+
+export async function blockOrUnblockUser(req,res){
+    const email=req.params.email;
+    if(isAdmin(req)){
+        try{
+            const user=await User.findOne(
+                {email:email}  )
+
+            if(user==null){
+                res.status(404).json({error:"User not found"});
+                return;
+            }
+            const isBlocked=!user.isBlocked
+            await User.updateOne(
+                {email:email},
+                {isBlocked:isBlocked}
+            )
+            res.json({
+                message:"User blocked/unblocked successfully"
+            })
+        }catch(e){
+            res.status(500).json({error:"Failed to get user"})
+        }
+    }
+}
