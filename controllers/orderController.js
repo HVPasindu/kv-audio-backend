@@ -1,5 +1,6 @@
 import Order from "../models/order.js";
 import Product from "../models/product.js";
+import { isAdmin, isCustomer } from "./userController.js";
 
 export async function createOrder(req,res){
         const data=req.body;
@@ -149,4 +150,59 @@ export async function getQuote(req,res){
                 error: e.message 
             })
         }
+}
+
+export async function getOrders(req,res){
+    if(isCustomer(req)){
+        try{
+            const orders=await Order.find({email:req.user.email})
+            res.json(orders);
+        }catch(e){
+            res.status(500).json({
+                error:"Faild to get orders"
+            });
+        }
+    }else if(isAdmin(req)){
+        try{
+            const orders=await Order.find();
+            res.json(orders)
+        }catch(e){
+            res.status(500).json({error:"Failed to get orders"})
+        }
+    }else{
+        res.status(404).json({
+            error:"Unauthorized"
+        })
+    }
+}
+
+export async function approveOrRejectOrder(req,res){
+    const orderId=req.params.orderId;
+    const status=req.body.status;
+    if(isAdmin(req)){
+        try{
+            const order=await Order.findOne({
+                orderId:orderId
+            })
+            if(order==null){
+                res.status(404).json({error:"Order not found"});
+                return;
+            }
+            await Order.updateOne({
+                orderId:orderId
+            },
+            {
+                status:status
+            }
+        
+        );
+        res.json({message:"Order approved/rejected successfully"})
+        }catch(e){
+            res.status(500).json({
+                error:"Failed to get order"
+            })
+        }
+    }else{
+        res.status(400).json({error:"Unauthorized"});
+    }
 }

@@ -35,7 +35,13 @@ export async function loginUser(req,res){
             return;
             
         }else{
-           
+            if(user.isBlocked){
+                res.status(403).json({
+                    error:"Your account is blocked please contact the admin",
+                    
+                })
+                return
+            }
             const isPassword = bcrpt.compareSync(data.password,user.password);
             if(isPassword){
                 const token = jwt.sign({
@@ -142,5 +148,16 @@ export async function blockOrUnblockUser(req,res){
         }catch(e){
             res.status(500).json({error:"Failed to get user"})
         }
+    }
+}
+
+export function getUser_2(req,res){
+    if(req.user!=null){
+        res.json(req.user);
+
+    }else{
+        res.status(404).json({
+            error:"Unauthorized"
+        })
     }
 }
