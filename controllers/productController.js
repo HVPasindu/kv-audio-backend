@@ -117,7 +117,7 @@ export async function overViews(req,res){
  
   try{
      const key=req.params.key;
-    console.log(key)
+    // console.log(key)
     const product=await Product.findOne({
       key:key
     })

@@ -13,11 +13,14 @@ import orderRouter from "./routers/orderRouter.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5174',  // Specify frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
 app.use(bodyParser.json());
 app.use((req,res,next)=>{
     let token = req.header("Authorization");
-    console.log(req)
+    // console.log(req)
     
     if(token!=null){
         token=token.replace("Bearer ","")
