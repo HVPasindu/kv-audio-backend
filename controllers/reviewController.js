@@ -2,6 +2,7 @@ import Reviewmodel from "../models/review.js";
 
 
 export async function addReview(req,res){
+    //console.log(req.body)
     const data =req.body;
     
     if(req.user==null){
@@ -21,6 +22,8 @@ export async function addReview(req,res){
                     message:"Review added successfully"
                 })
             }catch(error){
+                console.error("Error adding review:", error);
+
                 res.status(500).json({
                     message:"review addtion failed"
                 })
@@ -157,4 +160,60 @@ export function approveReview(req,res){
             message:"you are not admin .Only admin can approve the reviews"
         })
     }
+}
+
+export async function updateReview(req,res){
+    const email = req.params.email;
+    const data=req.body;
+    //console.log(email);
+    if(req.user==null){
+        res.status(404).json({message:"please login...."});
+        return;
+    }if(req.user.role!="admin"){
+        if(req.user.email==email){
+            
+            Reviewmodel.updateOne(
+               {
+                    email:email}
+                ,data
+            ).then(()=>{
+            res.json({
+                 message:"review is updated"
+            })
+           
+        }).catch((error)=>{
+            res.json({
+                error:error
+            })
+        })
+        }else{
+            res.status(404).json({
+                message:"you are not authorized to perfrom this action..."
+            })
+        }
+
+        
+    }else{
+        try{
+            Reviewmodel.findOne({ email: email })
+            .then((review) => {
+                if (!review) {
+                     res.status(404).json({ message: "Review not foundss" });
+                     return
+                }})
+
+           await Reviewmodel.updateOne({
+            email:email
+        },data)
+            res.json({
+                message:"review is updated..."
+            })
+           //console.log(res)
+        }catch(error){
+            res.status(500).json({
+                message:"review deletion failed"
+            })
+        }
+    }
+
 }
