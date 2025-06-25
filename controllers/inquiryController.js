@@ -2,51 +2,51 @@
 import Inquiry from "../models/inquiry.js";
 import { isAdmin, isCustomer, registerUser } from "./userController.js";
 
-export async function addInquiry(req,res){
-    //console.log("gjr")
-    if(req.user==null){
-            res.status(401).json({
-                message:"Please login and try again"
-            })
-            return
-        }
-    let iscustomer= isCustomer(req);
-    //console.log(iscustomer)
-    try{
-        if(iscustomer){
-           //console.log(iscustomer);
+
+export async function addInquiry(req, res) {
+    // Check if the user is authenticated
+    if (req.user == null) {
+        return res.status(401).json({
+            message: "Please login and try again"
+        });
+    }
+
+    let iscustomer = isCustomer(req);
+
+    try {
+        if (iscustomer) {
             const data = req.body;
             data.email = req.user.email;
             data.phoneNumber = req.user.phoneNumber;
             data.response = data.response || ""; 
-            let id=0;
-            const inquirys= await Inquiry.find().sort({id:-1}).limit(1);
-            if(inquirys.length==0){
-                id =1;
-            }else{
-                id = inquirys[0].id+1;
-            }
-            data.id=id;
-            //console.log("kiils")
-            const newInqury = new Inquiry(data);
-            //console.log("kiil")
-            const respons = await newInqury.save();
-           // console.log("kii")
-            res.json({
-                message:"Inquiry added successfully...",
-                id:respons.id 
-            })
-        } else {
-                res.status(401).json({message: "Unauthorized"});
-    }
-    }catch(e){
-         console.error("Error saving inquiry:", e);
-        res.status(404).json({
 
-            message:"Failed to add inquiry.."
-        })
+            let id = 0;
+            const inquirys = await Inquiry.find().sort({ id: -1 }).limit(1);
+            if (inquirys.length === 0) {
+                id = 1;
+            } else {
+                id = inquirys[0].id + 1;
+            }
+            data.id = id;
+
+            const newInquiry = new Inquiry(data);
+            const response = await newInquiry.save();
+
+            res.json({
+                message: "Inquiry added successfully...",
+                id: response.id
+            });
+        } else {
+            res.status(401).json({ message: "Unauthorized" });
+        }
+    } catch (e) {
+        console.error("Error saving inquiry:", e);
+        res.status(404).json({
+            message: "Failed to add inquiry.."
+        });
     }
 }
+
 
 export function getInquiry(req,res){
     
