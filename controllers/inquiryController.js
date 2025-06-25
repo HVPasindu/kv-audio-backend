@@ -186,3 +186,5 @@ export async function inquiriesUpdate(req,res){
         })
     }
 }
+
+//jk
