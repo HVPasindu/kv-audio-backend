@@ -5,10 +5,11 @@ import { isAdmin, isCustomer, registerUser } from "./userController.js";
 export async function addInquiry(req,res){
     //console.log("gjr")
     if(req.user==null){
-        res.status(404).json({
-            message:"Please login first..."
-        })
-    }
+            res.status(401).json({
+                message:"Please login and try again"
+            })
+            return
+        }
     let iscustomer= isCustomer(req);
     //console.log(iscustomer)
     try{
