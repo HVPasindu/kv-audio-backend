@@ -4,7 +4,7 @@ const inquirySchema = new mongoose.Schema({
     email:{
         type:String,
         required:true,
-        unique:true
+        //unique:true
     },
     message:{
         type:String,
@@ -26,7 +26,7 @@ const inquirySchema = new mongoose.Schema({
     },
     response:{
         type:String,
-        required:true,
+        //required:true,
         default:""
     },
     issolved:{

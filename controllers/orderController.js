@@ -3,6 +3,7 @@ import Product from "../models/product.js";
 import { isAdmin, isCustomer } from "./userController.js";
 
 export async function createOrder(req,res){
+        console.log(req.body)
         const data=req.body;
         //console.log(data)
         const orderInfo ={

@@ -3,6 +3,7 @@ import Inquiry from "../models/inquiry.js";
 import { isAdmin, isCustomer, registerUser } from "./userController.js";
 
 export async function addInquiry(req,res){
+    //console.log("gjr")
     let iscustomer= isCustomer(req);
     //console.log(iscustomer)
     try{
@@ -11,6 +12,7 @@ export async function addInquiry(req,res){
             const data = req.body;
             data.email = req.user.email;
             data.phoneNumber = req.user.phoneNumber;
+            data.response = data.response || ""; 
             let id=0;
             const inquirys= await Inquiry.find().sort({id:-1}).limit(1);
             if(inquirys.length==0){
