@@ -1,35 +1,31 @@
 import Reviewmodel from "../models/review.js";
 
 
-export async function addReview(req,res){
-    //console.log(req.body)
-    const data =req.body;
-    
-    if(req.user==null){
-        res.json({
-            message:"please login..."
-        })
-        return;
-    }else{
-            data.email=req.user.email;
-            data.name = req.user.firstName+" "+req.user.lastName;
-            data.profilePicture = req.user.profilePicture;
-            const newReview = new Reviewmodel(data);
+export async function addReview(req, res) {
+    const data = req.body;
 
-            try{
-                await newReview.save();
-                res.json({
-                    message:"Review added successfully"
-                })
-            }catch(error){
-                console.error("Error adding review:", error);
-
-                res.status(500).json({
-                    message:"review addtion failed"
-                })
-            }
-        }
+    if (!req.user) {
+        return res.status(401).json({
+            message: "Please login to add a review."
+        });
     }
+
+    data.email = req.user.email;
+    data.name = req.user.firstName + " " + req.user.lastName;
+    data.profilePicture = req.user.profilePicture;
+
+    const newReview = new Reviewmodel(data);
+
+    try {
+        await newReview.save();
+        res.json({ message: "Review added successfully" });
+    } catch (error) {
+        console.error("Error adding review:", error);
+        res.status(500).json({
+            message: "Failed to add review"
+        });
+    }
+}
 
 export async function getReview(req,res){
     //const data =req.body;data mokuth evanne naha
