@@ -183,6 +183,24 @@ export function getUser_2(req,res){
         })
     }
 }
+export function getUser_3(req, res) {
+    if (req.user != null) {
+        // Assuming `req.user` contains user details, including role information
+        console.log(req.user.role)
+        if (req.user.role === 'admin') {
+            res.json({ isAdmin: true, user: req.user });
+        } else {
+            res.json({ isAdmin: false, user: req.user });
+        }
+    } else {
+        console.log(req.user.role)
+        res.status(404).json({
+            
+            error: "Unauthorizedss"
+        });
+    }
+}
+
 
 export async function loginWithGoogle(req,res){
     //https://www.googleapis.com/oauth2/v3/userinfo
