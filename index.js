@@ -9,6 +9,7 @@ import reviewRouter from "./routers/reviewRouter.js";
 import InquiryRouter from "./routers/inquiryRouter.js";
 import cors from "cors";
 import orderRouter from "./routers/orderRouter.js";
+import dashboardRouter from "./routers/dashboardRouter.js";
 
 dotenv.config();
 
@@ -46,6 +47,8 @@ app.use("/api/product",productRouter)
 app.use("/api/review",reviewRouter);
 app.use("/api/inquiry",InquiryRouter);
 app.use("/api/orders",orderRouter);
+app.use("/api", dashboardRouter);
+
 
 
 
