@@ -207,3 +207,22 @@ export async function approveOrRejectOrder(req,res){
         res.status(400).json({error:"Unauthorized"});
     }
 }
+
+export async function deleteOrder(req, res) {
+  const orderId = req.params.orderId;
+  if (isAdmin(req)) {
+    try {
+      const order = await Order.findOne({ orderId });
+      if (!order) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+
+      await Order.deleteOne({ orderId });
+      res.json({ message: "Order deleted successfully" });
+    } catch (e) {
+      res.status(500).json({ message: "Failed to delete order", error: e.message });
+    }
+  } else {
+    res.status(403).json({ message: "Unauthorized" });
+  }
+}
