@@ -177,36 +177,30 @@ export async function getOrders(req,res){
     }
 }
 
-export async function approveOrRejectOrder(req,res){
-    const orderId=req.params.orderId;
-    const status=req.body.status;
-    if(isAdmin(req)){
-        try{
-            const order=await Order.findOne({
-                orderId:orderId
-            })
-            if(order==null){
-                res.status(404).json({error:"Order not found"});
-                return;
+export async function approveOrRejectOrder(req, res) {
+    const orderId = req.params.orderId;
+    const status = req.body.status;  // "approved" or "rejected"
+    
+    if (isAdmin(req)) {
+        try {
+            const order = await Order.findOne({ orderId });
+            if (!order) {
+                return res.status(404).json({ error: "Order not found" });
             }
-            await Order.updateOne({
-                orderId:orderId
-            },
-            {
-                status:status
-            }
-        
-        );
-        res.json({message:"Order approved/rejected successfully"})
-        }catch(e){
-            res.status(500).json({
-                error:"Failed to get order"
-            })
+
+            // Update the status directly instead of using isApproved
+            order.status = status;  
+            await order.save();  // Save the updated order
+
+            res.json({ message: "Order approved/rejected successfully", order });
+        } catch (e) {
+            res.status(500).json({ error: "Failed to update order", message: e.message });
         }
-    }else{
-        res.status(400).json({error:"Unauthorized"});
+    } else {
+        res.status(400).json({ error: "Unauthorized" });
     }
 }
+
 
 export async function deleteOrder(req, res) {
   const orderId = req.params.orderId;
