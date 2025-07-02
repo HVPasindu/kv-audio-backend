@@ -339,3 +339,27 @@ export async function verifyOTP(req,res){
   }
   
 }
+
+export async function registerAdmin(req, res) {
+  let newUser = req.body;
+  newUser.password = bcrpt.hashSync(newUser.password, 10);
+  let user = new User(newUser);
+
+  // Check if the user is trying to register an admin and if they are authorized
+  if (newUser.role === "admin" && !isAdmin(req)) {
+    return res.status(403).json({
+      error: "Only admins can register new admins.",
+    });
+  }
+
+  try {
+    await user.save();
+    res.json({
+      message: "Admin registered successfully!",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to register the admin.",
+    });
+  }
+}

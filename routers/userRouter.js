@@ -1,4 +1,4 @@
-import { getUser,registerUser,loginUser, getAllUsers, blockOrUnblockUser, getUser_2, loginWithGoogle, sendOTP, verifyOTP, getUser_3} from "../controllers/userController.js";
+import { getUser,registerUser,loginUser, getAllUsers, blockOrUnblockUser, getUser_2, loginWithGoogle, sendOTP, verifyOTP, getUser_3, registerAdmin, isAdmin} from "../controllers/userController.js";
 import express from "express";
 
 const userRouter = express.Router();
@@ -12,6 +12,9 @@ userRouter.post("/google",loginWithGoogle)
 userRouter.get("/sendOTP",sendOTP)
 userRouter.post("/verifyEmail",verifyOTP)
 userRouter.post("/admincheck",getUser_3)
+userRouter.post("/admin/register",  registerAdmin,isAdmin)
+
+
 
 
 export default userRouter;
