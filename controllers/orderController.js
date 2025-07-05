@@ -179,7 +179,7 @@ export async function getOrders(req,res){
 
 export async function approveOrRejectOrder(req, res) {
     const orderId = req.params.orderId;
-    const status = req.body.status;  // "approved" or "rejected"
+    const status = req.body.status;  
     
     if (isAdmin(req)) {
         try {

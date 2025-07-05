@@ -185,7 +185,7 @@ export function getUser_2(req,res){
 }
 export function getUser_3(req, res) {
     if (req.user != null) {
-        // Assuming `req.user` contains user details, including role information
+       
         // console.log(req.user.role)
         if (req.user.role === 'admin') {
             res.json({ isAdmin: true, user: req.user });
@@ -275,9 +275,9 @@ export async function sendOTP(req,res){
     return;
   }
 
-    //generate number between 1000 and 9999
+    
     const otp = Math.floor(Math.random()*9000) + 1000;
-    //save otp in database
+   
     console.log("otp=1")
     console.log(otp)
     const newOTP = new OTP({
