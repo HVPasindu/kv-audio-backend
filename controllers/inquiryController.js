@@ -4,7 +4,7 @@ import { isAdmin, isCustomer, registerUser } from "./userController.js";
 
 
 export async function addInquiry(req, res) {
-    // Check if the user is authenticated
+    
     if (req.user == null) {
         return res.status(401).json({
             message: "Please login and try again"

@@ -188,9 +188,9 @@ export async function approveOrRejectOrder(req, res) {
                 return res.status(404).json({ error: "Order not found" });
             }
 
-            // Update the status directly instead of using isApproved
+           
             order.status = status;  
-            await order.save();  // Save the updated order
+            await order.save();  
 
             res.json({ message: "Order approved/rejected successfully", order });
         } catch (e) {
