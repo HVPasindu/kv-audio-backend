@@ -14,10 +14,7 @@ import dashboardRouter from "./routers/dashboardRouter.js";
 dotenv.config();
 
 const app = express();
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5174', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-}));
+app.use(cors());
 app.use(bodyParser.json());
 app.use((req,res,next)=>{
     let token = req.header("Authorization");
