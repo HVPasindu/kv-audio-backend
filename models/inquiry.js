@@ -40,3 +40,5 @@ const inquirySchema = new mongoose.Schema({
 const Inquiry = mongoose.model("Inquiry",inquirySchema);
 
 export default Inquiry;
+
+//update
