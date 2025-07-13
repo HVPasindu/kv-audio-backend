@@ -8,11 +8,11 @@ userRouter.get("/",getUser);
 userRouter.get("/all",getAllUsers);
 userRouter.get("/validate",getUser_2)
 userRouter.put("/block/:email",blockOrUnblockUser);
-userRouter.post("/google",loginWithGoogle)
 userRouter.get("/sendOTP",sendOTP)
 userRouter.post("/verifyEmail",verifyOTP)
 userRouter.post("/admincheck",getUser_3)
 userRouter.post("/admin/register",  registerAdmin,isAdmin)
+userRouter.post("/google",loginWithGoogle)
 
 
 
